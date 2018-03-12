@@ -1,0 +1,6 @@
+WindowsStandalone
+SceneListBegin?
+Assets/Scenes/Main.unity
+SceneListEnd?
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LoadFromFileExample
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LoadAB
