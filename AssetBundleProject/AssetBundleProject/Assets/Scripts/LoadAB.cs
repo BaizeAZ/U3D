@@ -14,23 +14,39 @@ public class LoadAB : MonoBehaviour {
     void Start () {
         LoadDependeciesManifest();
         //0
-        //AssetBundle ab1 = AssetBundle.LoadFromFile(path);
-        //AssetBundle ab2 = AssetBundle.LoadFromFile(pathShare);
-        //GameObject go1 = ab1.LoadAsset<GameObject>("CapsuleWall");        
-        //Instantiate(go1);
+        LoadFromFile(pathCapsule);
         //1
         //StartCoroutine(LoadFromMemoryAsync(pathCapsule));
         //2
         //StartCoroutine("LoadUsedWWW");
         //3
-        StartCoroutine("LoadUsedWebRequest");
+        //StartCoroutine("LoadUsedWebRequest");
+
+
+        //StartCoroutine(LoadFormFileAsync(pathCapsule));
     }
 
     // Update is called once per frame
     void Update () {
 
 	}
-
+    //本地同步加载
+    private void LoadFromFile(string path)
+    {
+        AssetBundle ab = AssetBundle.LoadFromFile(path);
+        var go = ab.LoadAsset<GameObject>(capsuleWall);
+        Instantiate(go);
+    }
+    //从本地异步加载
+    IEnumerator LoadFormFileAsync(string path)
+    {
+        AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(path);
+        yield return createRequest;
+        AssetBundle ab = createRequest.assetBundle;
+        var gameObject = ab.LoadAsset<GameObject>(capsuleWall);
+        Instantiate(gameObject);
+    }
+    //从内存中异步加载
     IEnumerator LoadFromMemoryAsync(string path)
     {
         AssetBundleCreateRequest createRequest = AssetBundle.LoadFromMemoryAsync(File.ReadAllBytes(path));
@@ -39,6 +55,7 @@ public class LoadAB : MonoBehaviour {
         var gameObject = ab.LoadAsset<GameObject>(capsuleWall);
         Instantiate(gameObject);
     }
+    //用WWW加载
     IEnumerator LoadUsedWWW()
     {
         while (!Caching.ready)
@@ -55,14 +72,15 @@ public class LoadAB : MonoBehaviour {
             Debug.Log(www.error);
             yield break;
         }
-        var myLoadedAB = www.assetBundle;
+        var myLoadedAB = www.assetBundle;        
         var gameObject = myLoadedAB.LoadAsset<GameObject>(capsuleWall);
         Instantiate(gameObject);
     }
+    //用UnityWebRequest加载
     IEnumerator LoadUsedWebRequest()
     {
         string url = "file:///E:/git_U3D/AssetBundleProject/AssetBundleProject/AssetBundles/capsulewall.unity3d";
-        //string url = "http://localhost/AssetBundles/capsulewall.unity3d";
+        //string url = "http://localhost/AssetBundles/capsulewall.unity3d
         UnityWebRequest request = UnityWebRequest.GetAssetBundle(url);
         yield return request.SendWebRequest();
         //1
@@ -74,10 +92,11 @@ public class LoadAB : MonoBehaviour {
         AssetBundleRequest abRequest = ab.LoadAssetAsync<GameObject>(capsuleWall);        
         yield return abRequest;
         var gameObject = abRequest.asset;
-        Instantiate(gameObject);                
+        Instantiate(gameObject);
     }
     private void LoadDependeciesManifest()
     {
+        //如同加载ab，加载manifest也是类似的方式
         AssetBundle ab = AssetBundle.LoadFromFile("AssetBundles/AssetBundles");
         AssetBundleManifest manifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
         string[] dependencies = manifest.GetAllDependencies("capsulewall.unity3d");
@@ -86,5 +105,5 @@ public class LoadAB : MonoBehaviour {
             Debug.Log(dependence);
             AssetBundle.LoadFromFile(Path.Combine(path, dependence));
         }        
-    }
+    }    
 }

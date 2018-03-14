@@ -10,7 +10,7 @@ public class LoadFromFileExample : MonoBehaviour {
 	IEnumerator Start () {
         string path = "AssetBundles/cubewall.unity3d";
         //AssetBundle ab = AssetBundle.LoadFromFile(path);
-        //GameObject wallPrefab = ab.LoadAsset<GameObject>("CubeWall");
+        //GameObject wallPrefab = ab.LoadAsset<GameObject>("CubeWall")；
         //Instantiate(wallPrefab);
 
         //AssetBundle ab2 = AssetBundle.LoadFromFile("AssetBundles/share.unity3d");
