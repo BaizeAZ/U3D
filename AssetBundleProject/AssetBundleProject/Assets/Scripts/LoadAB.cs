@@ -63,7 +63,7 @@ public class LoadAB : MonoBehaviour {
             yield return null;
         }
         //local
-        //var www = WWW.LoadFromCacheOrDownload(@"file:///E:\U3D_Workplace\源码工程、PPT\源码工程、PPT\AssetBundleProject\AssetBundleProject\AssetBundles\capsulewall.unity3d", 1);
+        //var www = WWW.LoadFromCacheOrDownload(@"file:///E:/git_U3D/AssetBundleProject/AssetBundleProject/AssetBundles/capsulewall.unity3d", 1);
         //web
         var www = WWW.LoadFromCacheOrDownload(@"http://localhost/AssetBundles/capsulewall.unity3d",1);
         yield return www;
